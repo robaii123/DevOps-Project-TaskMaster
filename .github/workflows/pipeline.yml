@@ -3,11 +3,11 @@ name: DevSecOps pipeline
 on:
   push:
     branches: [ main, dev]
-    path-ignore:
+    paths-ignore:
       - README.md
   pull_request:
     branches: [ main ]
-    path-ignore:
+    paths-ignore:
       - README.md*
 
 
@@ -16,18 +16,19 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      image: postgres:16-alpine
-      env:
-        POSTGRES_DB= taskdb
-        POSTGRES_USER= postgres
-        POSTGRES_PASSWORD= secretpassword
-      ports:
-        - 5432:5432
-      options: >-
-        --health-cmd pg_isready
-        --health-interval 5s
-        --health-timeout 5s
-        --health-retries 5
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: taskdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secretpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
     
     steps:
       - name: Recuperer le code
@@ -45,12 +46,12 @@ jobs:
           DB_HOST: localhost
           DB_NAME: taskdb
           DB_USER: postgres
-          DB_PASSWORD: secretpassword
+          DB_PASS: secretpassword
         run: pytest
 
   build-scan-push:
     runs-on: ubuntu-latest
-    need: quality-test
+    needs: quality-test
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
