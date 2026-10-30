@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-alpine
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN useradd -m appuser && chown -R appuser /app
+RUN adduser -D appuser && chown -R appuser /app
 
 USER appuser
 
