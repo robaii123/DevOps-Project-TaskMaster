@@ -58,7 +58,7 @@ jobs:
       - name: Recuperer le code
         uses: actions/checkout@v4
 
-      - name: Construire l'image Docker (Double Tag : latest + commit SHA)
+      - name: Construire l'image Docker (Double Tag ${{:}} latest + commit SHA)
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
