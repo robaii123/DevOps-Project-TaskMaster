@@ -11,7 +11,9 @@ services:
       - DB_PASS=secretpassword
 
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+        
   db:
     image: postgres:16-alpine
     environment:
@@ -20,3 +22,11 @@ services:
       - POSTGRES_PASSWORD=secretpassword
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+  
+volumes:
+  pgdata:
