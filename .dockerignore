@@ -1,0 +1,11 @@
+.git
+.github
+.pytest_cache
+__pycache__
+*.pyc
+test_app.py
+requirements-dev.txt
+docker-compose.yml
+nginx.conf
+Dockerfile
+README.md   
